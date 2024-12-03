@@ -87,6 +87,21 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/scenicSpot',
+    component: Layout,
+    redirect: '/scenicSpot/userPersonal',
+    name: 'scenicSpot',
+    meta: { title: '景点门票', icon: 'table' },
+    children: [
+      {
+        path: 'scenicSpotList',
+        name: 'scenicSpotList',
+        component: () => import('@/views/scenicSpot/scenicSpotManage.vue'),
+        meta: { title: '景点门票管理', icon: 'nested' }
+      }
+    ]
+  },
 
   // 404 页面必须放置在最后一个页面
   { path: '*', redirect: '/404', hidden: true }

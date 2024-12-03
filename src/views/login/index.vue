@@ -47,8 +47,8 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="options">
-        <el-button v-if="loginForm.role === '普通用户'" type="text" @click="showRegisterDialogFunction()">注册账号</el-button>
-        <el-button v-if="loginForm.role === '普通用户'" type="text" @click="showRecoverPasswordDialogFunction()">找回密码</el-button>
+        <el-button v-show="loginForm.role === '普通用户'" type="text" @click="showRegisterDialogFunction()">注册账号</el-button>
+        <el-button v-show="loginForm.role === '普通用户'" type="text" @click="showRecoverPasswordDialogFunction()">找回密码</el-button>
       </div>
 
     </el-form>
