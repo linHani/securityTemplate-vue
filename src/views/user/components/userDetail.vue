@@ -11,7 +11,7 @@
         <el-input v-model="data.username" disabled />
       </el-form-item>
       <el-form-item label="用户名">
-        <el-input v-model="data.nickname" disabled />
+        <el-input v-model="data.name" disabled />
       </el-form-item>
       <el-form-item label="性别">
         <el-select v-model="data.sex" disabled>
@@ -65,6 +65,11 @@ export default {
     return {
       data: this.parentData,
       loading: false
+    }
+  },
+  mounted() {
+    if (this.data.role === '管理员') {
+      this.$set(this.data, 'username', this.parentData.adminname)
     }
   }
 }

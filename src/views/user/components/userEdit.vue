@@ -10,8 +10,8 @@
       <el-form-item prop="username" label="登录账号">
         <el-input v-model="data.username" />
       </el-form-item>
-      <el-form-item prop="nickname" label="用户名">
-        <el-input v-model="data.nickname" />
+      <el-form-item prop="name" label="用户名">
+        <el-input v-model="data.name" />
       </el-form-item>
       <el-form-item prop="sex" label="性别">
         <el-select v-model="data.sex">
@@ -29,7 +29,7 @@
         <el-input v-model="data.tel" />
       </el-form-item>
       <el-form-item prop="role" label="角色">
-        <el-select v-model="data.role">
+        <el-select v-model="data.role" disabled>
           <el-option label="管理员" value="管理员" />
           <el-option label="普通用户" value="普通用户" />
         </el-select>
@@ -79,7 +79,7 @@ export default {
       rules: {
         avatar: [{ required: true, validator: validateImage, trigger: 'blur' }],
         username: [{ required: true, message: '请输入登录账号', trigger: 'blur' }],
-        nickname: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         sex: [{ required: true, message: '请输入性别', trigger: 'blur' }],
         age: [{ required: true, message: '请输入年龄', trigger: 'blur' }],
@@ -91,6 +91,11 @@ export default {
     }
   },
   watch: {},
+  mounted() {
+    if (this.data.role === '管理员') {
+      this.$set(this.data, 'username', this.parentData.adminname)
+    }
+  },
   methods: {
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {

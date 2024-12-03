@@ -57,7 +57,7 @@
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>用户列表</label>
+              <label>管理员列表</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
@@ -90,7 +90,7 @@
         </el-table-column>
         <el-table-column
           min-width="10%"
-          prop="username"
+          prop="adminname"
           label="登录账号"
           show-overflow-tooltip
           align="center"
@@ -221,16 +221,16 @@
     <el-dialog
       v-if="showAddDialog"
       :visible.sync="showAddDialog"
-      title="新增用户"
+      title="新增管理员"
       destroy-on-close
     >
-      <UserAdd role="普通用户" @onSubmit="closeAddDialogFunction()" />
+      <UserAdd role="管理员" @onSubmit="closeAddDialogFunction()" />
     </el-dialog>
     <!--详情页组件-->
     <el-dialog
       v-if="showDetailDialog"
       :visible.sync="showDetailDialog"
-      title="用户详情"
+      title="管理员详情"
       destroy-on-close
     >
       <UserDetail :parent-data="data" @onSubmit="closeDetailDialogFunction()" />
@@ -239,7 +239,7 @@
     <el-dialog
       v-if="showEditDialog"
       :visible.sync="showEditDialog"
-      title="编辑用户"
+      title="编辑管理员"
       destroy-on-close
     >
       <UserEdit :parent-data="data" @onSubmit="closeEditDialogFunction()" />
@@ -289,7 +289,7 @@ export default {
     },
     selectByPage() {
       this.loading = true
-      this.params.role = '普通用户'
+      this.params.role = '管理员'
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
       service.post('/user/selectByPage', this.params).then(res => {

@@ -68,10 +68,16 @@ export const asyncRoutes = [
     meta: { title: '用户', icon: 'user' },
     children: [
       {
-        path: 'userPersonal',
-        name: 'userPersonal',
-        component: () => import('@/views/user/userPersonal.vue'),
+        path: 'personal',
+        name: 'personal',
+        component: () => import('@/views/user/personal.vue'),
         meta: { title: '个人中心', icon: 'nested' }
+      },
+      {
+        path: 'adminList',
+        name: 'adminList',
+        component: () => import('@/views/user/adminManage.vue'),
+        meta: { title: '管理员管理', icon: 'table', roles: ['管理员'] }
       },
       {
         path: 'userList',

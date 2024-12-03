@@ -10,8 +10,8 @@
       <el-form-item prop="username" label="登录账号">
         <el-input v-model="data.username" />
       </el-form-item>
-      <el-form-item prop="nickname" label="用户名">
-        <el-input v-model="data.nickname" />
+      <el-form-item prop="name" label="用户名">
+        <el-input v-model="data.name" />
       </el-form-item>
       <el-form-item prop="password" label="密码">
         <el-input v-model="data.password" />
@@ -32,7 +32,7 @@
         <el-input v-model="data.tel" />
       </el-form-item>
       <el-form-item prop="role" label="角色">
-        <el-select v-model="data.role">
+        <el-select v-model="data.role" disabled>
           <el-option label="管理员" value="管理员" />
           <el-option label="普通用户" value="普通用户" />
         </el-select>
@@ -62,7 +62,12 @@ import UploadSingleImage from '@/components/Upload/UploadSingleImage.vue'
 
 export default {
   components: { UploadSingleImage },
-  props: {},
+  props: {
+    role: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     const validateImage = (rule, value, callback) => {
       if (this.data.avatar === null || this.data.avatar === undefined) {
@@ -76,7 +81,7 @@ export default {
       rules: {
         avatar: [{ required: true, validator: validateImage, trigger: 'blur' }],
         username: [{ required: true, message: '请输入登录账号', trigger: 'blur' }],
-        nickname: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         sex: [{ required: true, message: '请输入性别', trigger: 'blur' }],
         age: [{ required: true, message: '请输入年龄', trigger: 'blur' }],
@@ -85,7 +90,9 @@ export default {
         role: [{ required: true, message: '请选择角色', trigger: 'change' }],
         status: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
-      data: {}
+      data: {
+        role: this.role
+      }
     }
   },
   watch: {},

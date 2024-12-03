@@ -41,11 +41,14 @@
         </span>
       </el-form-item>
 
+      <el-radio v-model="loginForm.role" label="普通用户">普通用户</el-radio>
+      <el-radio v-model="loginForm.role" label="管理员" style="margin-bottom: 20px">管理员</el-radio>
+
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="options">
-        <el-button type="text" @click="showRegisterDialogFunction()">注册账号</el-button>
-        <el-button type="text" @click="showRecoverPasswordDialogFunction()">找回密码</el-button>
+        <el-button v-if="loginForm.role === '普通用户'" type="text" @click="showRegisterDialogFunction()">注册账号</el-button>
+        <el-button v-if="loginForm.role === '普通用户'" type="text" @click="showRecoverPasswordDialogFunction()">找回密码</el-button>
       </div>
 
     </el-form>
@@ -91,7 +94,9 @@ export default {
       }
     }
     return {
-      loginForm: {},
+      loginForm: {
+        role: '普通用户'
+      },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
