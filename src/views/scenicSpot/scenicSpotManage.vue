@@ -34,7 +34,7 @@
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>用户列表</label>
+              <label>景点门票列表</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
@@ -62,7 +62,7 @@
           align="center"
         >
           <template #default="scope">
-            <img :src="baseUrl + scope.row.image" alt="头像" style="width: 50px; height: 50px;">
+            <img :src="baseUrl + scope.row.image" alt="景点图片" style="width: 50px; height: 50px;">
           </template>
         </el-table-column>
         <el-table-column
@@ -76,13 +76,6 @@
           min-width="10%"
           prop="type"
           label="景点类型"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="sex"
-          label="性别"
           show-overflow-tooltip
           align="center"
         />
@@ -103,7 +96,7 @@
         <el-table-column
           min-width="10%"
           prop="price"
-          label="门票价格"
+          label="门票价格(元)"
           show-overflow-tooltip
           align="center"
         />
@@ -116,36 +109,8 @@
         />
         <el-table-column
           min-width="10%"
-          prop="openTime"
-          label="开放时间"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
           prop="createTime"
           label="创建时间"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="precautions"
-          label="注意事项"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="trafficGuide"
-          label="交通指南"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="introduce"
-          label="景点介绍"
           show-overflow-tooltip
           align="center"
         />
@@ -225,7 +190,6 @@ import service from '@/utils/request'
 import ScenicSpotAdd from '@/views/scenicSpot/components/scenicSpotAdd.vue'
 import ScenicSpotDetail from '@/views/scenicSpot/components/scenicSpotDetail.vue'
 import ScenicSpotEdit from '@/views/scenicSpot/components/scenicSpotEdit.vue'
-
 import { Message } from 'element-ui'
 
 export default {
@@ -266,9 +230,12 @@ export default {
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
       service.post('/scenicSpot/selectByPage', this.params).then(res => {
-        this.dataList = res.data.content
-        this.page.pages = res.data.page.totalPages
-        this.page.totalCount = res.data.page.totalElements
+        this.dataList = res.data.data.map(item => {
+          item.price = item.price / 100
+          return item
+        })
+        this.page.pages = res.data.pages
+        this.page.totalCount = res.data.totalCount
         this.loading = false
       }).catch(error => {
         console.log(error)
@@ -276,7 +243,7 @@ export default {
       })
     },
     onDelete(row) {
-      this.$confirm('此操作将删除该账号, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该条数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -298,7 +265,7 @@ export default {
     },
     handlePageCurrentChange(val) {
       this.page.current = val
-      this.query()
+      this.selectByPage()
     },
     showAddDialogFunction() {
       this.showAddDialog = true

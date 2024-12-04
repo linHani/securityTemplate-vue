@@ -102,6 +102,21 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/hotel',
+    component: Layout,
+    redirect: '/hotel/userPersonal',
+    name: 'hotel',
+    meta: { title: '酒店住宿', icon: 'table' },
+    children: [
+      {
+        path: 'hotelList',
+        name: 'hotelList',
+        component: () => import('@/views/hotel/hotelManage.vue'),
+        meta: { title: '酒店住宿管理', icon: 'nested' }
+      }
+    ]
+  },
 
   // 404 页面必须放置在最后一个页面
   { path: '*', redirect: '/404', hidden: true }

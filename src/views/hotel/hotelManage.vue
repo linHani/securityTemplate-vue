@@ -4,41 +4,18 @@
       <el-form ref="queryForm" :model="params" label-width="100px" class="clearfix">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="登录账号">
-              <el-input v-model="params.username" placeholder="请输入登录账号" />
+            <el-form-item label="酒店名称">
+              <el-input v-model="params.name" placeholder="请输入酒店名称" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="用户名">
-              <el-input v-model="params.name" placeholder="请输入昵称" />
+            <el-form-item label="酒店类型">
+              <el-input v-model="params.type" placeholder="请输入酒店类型" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="性别">
-              <el-select v-model="params.sex" clearable placeholder="请选择性别">
-                <el-option label="男" value="男" />
-                <el-option label="女" value="女" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="电话号">
-              <el-input v-model="params.tel" placeholder="请输入电话号" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="邮箱">
-              <el-input v-model="params.email" placeholder="请输入邮箱地址" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="状态">
-              <el-select v-model="params.status" clearable placeholder="请选择状态">
-                <el-option label="启用" :value="0" />
-                <el-option label="禁用" :value="1" />
-              </el-select>
+            <el-form-item label="联系电话">
+              <el-input v-model="params.tel" placeholder="请输入联系电话" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -57,7 +34,7 @@
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>用户列表</label>
+              <label>酒店住宿</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
@@ -79,79 +56,54 @@
       >
         <el-table-column
           min-width="10%"
-          prop="avatar"
-          label="头像"
+          prop="image"
+          label="酒店图片"
           show-overflow-tooltip
           align="center"
         >
           <template #default="scope">
-            <img :src="baseUrl + scope.row.avatar" alt="头像" style="width: 50px; height: 50px;">
+            <img :src="baseUrl + scope.row.image" alt="酒店图片" style="width: 50px; height: 50px;">
           </template>
         </el-table-column>
         <el-table-column
           min-width="10%"
-          prop="username"
-          label="登录账号"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
           prop="name"
-          label="用户名"
+          label="酒店名称"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
           min-width="10%"
-          prop="sex"
-          label="性别"
+          prop="type"
+          label="酒店类型"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
           min-width="10%"
-          prop="age"
-          label="年龄"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="email"
-          label="邮箱"
+          prop="location"
+          label="酒店地址"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
           min-width="10%"
           prop="tel"
-          label="电话号"
+          label="联系电话"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
           min-width="10%"
-          prop="role"
-          label="角色"
+          prop="url"
+          label="酒店网址"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
           min-width="10%"
-          prop="status"
-          label="状态"
-          show-overflow-tooltip
-          align="center"
-        >
-          <template v-slot="scope">
-            <span :class="scope.row.status === 0 ? 'status-enabled' : 'status-disabled'"> {{ scope.row.status === 0 ? '启用' : '禁用' }} </span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          min-width="10%"
-          prop="createBy"
-          label="创建人"
+          prop="introduce"
+          label="酒店介绍"
           show-overflow-tooltip
           align="center"
         />
@@ -159,20 +111,6 @@
           min-width="10%"
           prop="createTime"
           label="创建时间"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="updateBy"
-          label="更新人"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="updateTime"
-          label="更新时间"
           show-overflow-tooltip
           align="center"
         />
@@ -221,41 +159,42 @@
     <el-dialog
       v-if="showAddDialog"
       :visible.sync="showAddDialog"
-      title="新增用户"
+      title="新增酒店住宿"
       destroy-on-close
     >
-      <UserAdd role="普通用户" @onSubmit="closeAddDialogFunction()" />
+      <HotelAdd @onSubmit="closeAddDialogFunction()" />
     </el-dialog>
     <!--详情页组件-->
     <el-dialog
       v-if="showDetailDialog"
       :visible.sync="showDetailDialog"
-      title="用户详情"
+      title="酒店住宿详情"
       destroy-on-close
     >
-      <UserDetail :parent-data="data" @onSubmit="closeDetailDialogFunction()" />
+      <HotelDetail :parent-data="data" @onSubmit="closeDetailDialogFunction()" />
     </el-dialog>
     <!--编辑页组件-->
     <el-dialog
       v-if="showEditDialog"
       :visible.sync="showEditDialog"
-      title="编辑用户"
+      title="编辑酒店住宿"
       destroy-on-close
     >
-      <UserEdit :parent-data="data" @onSubmit="closeEditDialogFunction()" />
+      <HotelEdit :parent-data="data" @onSubmit="closeEditDialogFunction()" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 import service from '@/utils/request'
-import UserAdd from '@/views/user/components/userAdd.vue'
-import UserDetail from '@/views/user/components/userDetail.vue'
-import UserEdit from '@/views/user/components/userEdit.vue'
+import HotelAdd from '@/views/hotel/components/hotelAdd.vue'
+import HotelDetail from '@/views/hotel/components/hotelDetail.vue'
+import HotelEdit from '@/views/hotel/components/hotelEdit.vue'
+
 import { Message } from 'element-ui'
 
 export default {
-  components: { UserAdd, UserDetail, UserEdit },
+  components: { HotelAdd, HotelDetail, HotelEdit },
   data() {
     const baseUrl = process.env.VUE_APP_HTTP_LOCATION
     return {
@@ -289,13 +228,15 @@ export default {
     },
     selectByPage() {
       this.loading = true
-      this.params.role = '普通用户'
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
-      service.post('/user/selectByPage', this.params).then(res => {
-        this.dataList = res.data.content
-        this.page.pages = res.data.page.totalPages
-        this.page.totalCount = res.data.page.totalElements
+      service.post('/hotel/selectByPage', this.params).then(res => {
+        this.dataList = res.data.data.map(item => {
+          item.price = item.price / 100
+          return item
+        })
+        this.page.pages = res.data.pages
+        this.page.totalCount = res.data.totalCount
         this.loading = false
       }).catch(error => {
         console.log(error)
@@ -308,7 +249,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        service.get('/user/delete?id=' + row.id).then(res => {
+        service.get('/hotel/delete?id=' + row.id).then(res => {
           if (res.status === 'ok') {
             Message.success('删除成功')
           }

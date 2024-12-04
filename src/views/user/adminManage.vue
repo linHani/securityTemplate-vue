@@ -303,7 +303,7 @@ export default {
       })
     },
     onDelete(row) {
-      this.$confirm('此操作将删除该账号, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该条数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

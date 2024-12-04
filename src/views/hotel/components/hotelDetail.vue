@@ -1,40 +1,28 @@
 <template>
   <div v-loading="loading">
     <el-form ref="form" :model="data" label-width="80px">
-      <el-form-item prop="image" label="景点图片">
+      <el-form-item prop="image" label="酒店图片">
         <UploadSingleImage
           v-model="data.image"
           :disabled="true"
         />
       </el-form-item>
-      <el-form-item label="景点名称">
+      <el-form-item label="酒店名称">
         <el-input v-model="data.name" disabled />
       </el-form-item>
-      <el-form-item label="景点类型">
+      <el-form-item label="酒店类型">
         <el-input v-model="data.type" disabled />
       </el-form-item>
-      <el-form-item label="景点等级">
-        <el-input v-model="data.level" disabled />
-      </el-form-item>
-      <el-form-item label="景点地址">
+      <el-form-item label="酒店地址">
         <el-input v-model="data.location" disabled />
       </el-form-item>
-      <el-form-item label="门票价格(元)">
-        <el-input v-model="data.price" type="number" disabled />
+      <el-form-item label="联系电话">
+        <el-input v-model="data.tel" disabled />
       </el-form-item>
-      <el-form-item label="门票库存">
-        <el-input v-model="data.stock" type="number" disabled />
+      <el-form-item label="酒店网址">
+        <el-input v-model="data.url" disabled />
       </el-form-item>
-      <el-form-item label="开放时间">
-        <el-input v-model="data.openTime" disabled />
-      </el-form-item>
-      <el-form-item label="注意事项">
-        <el-input v-model="data.precautions" disabled />
-      </el-form-item>
-      <el-form-item label="交通指南">
-        <el-input v-model="data.trafficGuide" disabled />
-      </el-form-item>
-      <el-form-item label="景点介绍">
+      <el-form-item label="酒店介绍">
         <el-input v-model="data.introduce" disabled />
       </el-form-item>
     </el-form>
