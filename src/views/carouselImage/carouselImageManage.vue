@@ -4,20 +4,16 @@
       <el-form ref="queryForm" :model="params" label-width="100px" class="clearfix">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="酒店名称">
-              <el-input v-model="params.name" placeholder="请输入酒店名称" />
+            <el-form-item label="创建人">
+              <el-input v-model="params.createBy" placeholder="请输入创建人" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="酒店类型">
-              <el-input v-model="params.type" placeholder="请输入酒店类型" />
+            <el-form-item label="更新人">
+              <el-input v-model="params.updateBy" placeholder="请输入更新人" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="联系电话">
-              <el-input v-model="params.tel" placeholder="请输入联系电话" />
-            </el-form-item>
-          </el-col>
+          <el-col :span="8" />
         </el-row>
         <el-row>
           <el-col :span="24">
@@ -34,7 +30,7 @@
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>酒店住宿列表</label>
+              <label>轮播图列表</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
@@ -56,54 +52,19 @@
       >
         <el-table-column
           min-width="10%"
-          prop="image"
-          label="酒店图片"
+          prop="url"
+          label="轮播图"
           show-overflow-tooltip
           align="center"
         >
           <template #default="scope">
-            <img :src="baseUrl + scope.row.image" alt="酒店图片" style="width: 50px; height: 50px;">
+            <img :src="baseUrl + scope.row.url" alt="轮播图" style="width: 50px; height: 50px;">
           </template>
         </el-table-column>
         <el-table-column
           min-width="10%"
-          prop="name"
-          label="酒店名称"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="type"
-          label="酒店类型"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="location"
-          label="酒店地址"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="tel"
-          label="联系电话"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="url"
-          label="酒店网址"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="introduce"
-          label="酒店介绍"
+          prop="createBy"
+          label="创建人"
           show-overflow-tooltip
           align="center"
         />
@@ -111,6 +72,20 @@
           min-width="10%"
           prop="createTime"
           label="创建时间"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          min-width="10%"
+          prop="updateBy"
+          label="更新人"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          min-width="10%"
+          prop="updateTime"
+          label="更新时间"
           show-overflow-tooltip
           align="center"
         />
@@ -159,42 +134,41 @@
     <el-dialog
       v-if="showAddDialog"
       :visible.sync="showAddDialog"
-      title="新增酒店住宿"
+      title="新增轮播图"
       destroy-on-close
     >
-      <HotelAdd @onSubmit="closeAddDialogFunction()" />
+      <CarouselImageAdd @onSubmit="closeAddDialogFunction()" />
     </el-dialog>
     <!--详情页组件-->
     <el-dialog
       v-if="showDetailDialog"
       :visible.sync="showDetailDialog"
-      title="酒店住宿详情"
+      title="轮播图详情"
       destroy-on-close
     >
-      <HotelDetail :parent-data="data" @onSubmit="closeDetailDialogFunction()" />
+      <CarouselImageDetail :parent-data="data" @onSubmit="closeDetailDialogFunction()" />
     </el-dialog>
     <!--编辑页组件-->
     <el-dialog
       v-if="showEditDialog"
       :visible.sync="showEditDialog"
-      title="编辑酒店住宿"
+      title="编辑轮播图"
       destroy-on-close
     >
-      <HotelEdit :parent-data="data" @onSubmit="closeEditDialogFunction()" />
+      <CarouselImageEdit :parent-data="data" @onSubmit="closeEditDialogFunction()" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 import service from '@/utils/request'
-import HotelAdd from '@/views/hotel/components/hotelAdd.vue'
-import HotelDetail from '@/views/hotel/components/hotelDetail.vue'
-import HotelEdit from '@/views/hotel/components/hotelEdit.vue'
-
+import CarouselImageAdd from '@/views/carouselImage/components/carouselImageAdd.vue'
+import CarouselImageDetail from '@/views/carouselImage/components/carouselImageDetail.vue'
+import CarouselImageEdit from '@/views/carouselImage/components/carouselImageEdit.vue'
 import { Message } from 'element-ui'
 
 export default {
-  components: { HotelAdd, HotelDetail, HotelEdit },
+  components: { CarouselImageAdd, CarouselImageDetail, CarouselImageEdit },
   data() {
     const baseUrl = process.env.VUE_APP_HTTP_LOCATION
     return {
@@ -230,7 +204,7 @@ export default {
       this.loading = true
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
-      service.post('/hotel/selectByPage', this.params).then(res => {
+      service.post('/carouselImage/selectByPage', this.params).then(res => {
         this.dataList = res.data.data
         this.page.pages = res.data.pages
         this.page.totalCount = res.data.totalCount
@@ -246,7 +220,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        service.get('/hotel/delete?id=' + row.id).then(res => {
+        service.get('/carouselImage/delete?id=' + row.id).then(res => {
           if (res.status === 'ok') {
             Message.success('删除成功')
           }

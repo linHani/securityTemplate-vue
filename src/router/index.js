@@ -117,6 +117,21 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/userPersonal',
+    name: 'system',
+    meta: { title: '系统管理', icon: 'table' },
+    children: [
+      {
+        path: 'carouselImageList',
+        name: 'carouselImageList',
+        component: () => import('@/views/carouselImage/carouselImageManage.vue'),
+        meta: { title: '轮播图管理', icon: 'nested' }
+      }
+    ]
+  },
 
   // 404 页面必须放置在最后一个页面
   { path: '*', redirect: '/404', hidden: true }
