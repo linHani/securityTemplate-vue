@@ -42,17 +42,84 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '仪表盘', icon: 'dashboard' }
-    }]
+    // component: Layout,
+    component: () => import('@/views/reception/index'),
+    redirect: '/home'
+  }
+]
+
+// 前台路由
+const receptionRoutes = [
+  {
+    path: '/home',
+    name: 'home',
+    hidden: true,
+    component: () => import('@/views/reception/home/index'),
+    meta: { title: '首页' }
+  },
+  {
+    path: '/detail',
+    name: 'detail',
+    hidden: true,
+    component: () => import('@/components/Detail/index.vue'),
+    meta: { title: '详情' }
+  },
+  {
+    path: '/scenic',
+    name: 'scenic',
+    hidden: true,
+    component: () => import('@/views/reception/scenic/index.vue'),
+    meta: { title: '景点信息' }
+  },
+  {
+    path: '/travel',
+    name: 'travel',
+    hidden: true,
+    component: () => import('@/views/reception/travel/index.vue'),
+    meta: { title: '旅游路线' }
+  },
+  {
+    path: '/tavern',
+    name: 'tavern',
+    hidden: true,
+    component: () => import('@/views/reception/tavern/index.vue'),
+    meta: { title: '景区酒店' }
+  },
+  {
+    path: '/consult',
+    name: 'consult',
+    component: () => import('@/views/reception/consult/index.vue'),
+    meta: { title: '旅游咨询' }
+  },
+  {
+    path: '/collection',
+    name: 'collection',
+    hidden: true,
+    component: () => import('@/views/reception/collection/index.vue'),
+    meta: { title: '我的收藏' }
+  },
+  {
+    path: '/reserve',
+    name: 'reserve',
+    hidden: true,
+    component: () => import('@/views/reception/reserve/index.vue'),
+    meta: { title: '我的预定' }
+  },
+  {
+    path: '/refund',
+    name: 'refund',
+    hidden: true,
+    component: () => import('@/views/reception/refund/index.vue'),
+    meta: { title: '我的退单' }
+  },
+  {
+    path: '/personal',
+    name: 'personal',
+    hidden: true,
+    component: () => import('@/views/reception/personal/index.vue'),
+    meta: { title: '个人中心' }
   }
 ]
 
@@ -60,6 +127,86 @@ export const constantRoutes = [
  * 动态路由
  */
 export const asyncRoutes = [
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/homePage',
+    children: [
+      {
+        path: 'homePage',
+        name: 'homePage',
+        component: () => import('@/views/homePage/index'),
+        meta: { title: '首页', icon: 'dashboard' }
+      }
+    ]
+  },
+  {
+    path: '/place-interest',
+    component: Layout,
+    redirect: '/place-interest',
+    children: [
+      {
+        path: '/place-interest',
+        name: '/place-interest',
+        component: () => import('@/views/place-interest/index'),
+        meta: { title: '景点管理', icon: 'dashboard' }
+      }
+    ]
+  },
+  {
+    path: '/itinerary',
+    component: Layout,
+    redirect: '/itinerary',
+    children: [
+      {
+        path: '/itinerary',
+        name: '/itinerary',
+        component: () => import('@/views/itinerary/index'),
+        meta: { title: '线路管理', icon: 'dashboard' }
+      }
+    ]
+  },
+  {
+    path: '/hotel',
+    component: Layout,
+    redirect: '/hotel/userPersonal',
+    name: 'hotel',
+    meta: { title: '酒店住宿', icon: 'table' },
+    children: [
+      {
+        path: 'hotelList',
+        name: 'hotelList',
+        component: () => import('@/views/hotel/hotelManage.vue'),
+        meta: { title: '酒店住宿管理', icon: 'nested' }
+      }
+    ]
+  },
+  {
+    path: '/information',
+    component: Layout,
+    redirect: '/information',
+    children: [
+      {
+        path: '/information',
+        name: '/information',
+        component: () => import('@/views/information/index'),
+        meta: { title: '资讯管理', icon: 'dashboard' }
+      }
+    ]
+  },
+  {
+    path: '/hotel-reservation',
+    component: Layout,
+    redirect: '/hotel-reservation',
+    children: [
+      {
+        path: '/hotel-reservation',
+        name: '/hotel-reservation',
+        component: () => import('@/views/hotel-reservation/index'),
+        meta: { title: '酒店预约', icon: 'dashboard' }
+      }
+    ]
+  },
   {
     path: '/user',
     component: Layout,
@@ -103,21 +250,6 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/hotel',
-    component: Layout,
-    redirect: '/hotel/userPersonal',
-    name: 'hotel',
-    meta: { title: '酒店住宿', icon: 'table' },
-    children: [
-      {
-        path: 'hotelList',
-        name: 'hotelList',
-        component: () => import('@/views/hotel/hotelManage.vue'),
-        meta: { title: '酒店住宿管理', icon: 'nested' }
-      }
-    ]
-  },
-  {
     path: '/system',
     component: Layout,
     redirect: '/system/userPersonal',
@@ -140,7 +272,7 @@ export const asyncRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: [...constantRoutes, ...receptionRoutes]
 })
 
 const router = createRouter()

@@ -28,7 +28,12 @@ router.beforeEach(async(to, from, next) => {
     } else {
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
-        next()
+        const { roles } = await store.dispatch('user/getInfo')
+        if (from.path === '/login' && to.path === '/home' && roles.includes('管理员')) {
+          next({ path: '/homePage' })
+        } else {
+          next()
+        }
       } else {
         try {
           // get user info

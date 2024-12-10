@@ -1,24 +1,31 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
 
     <breadcrumb class="breadcrumb-container" />
 
-    <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              首页
-            </el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">退出登录</span>
-          </el-dropdown-item>
+    <div class="handle-box">
+      <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
+      <div class="avatar-wrapper">
+        <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
+        <img
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          class="user-avatar"
+        >
+        <!-- <i class="el-icon-caret-bottom" /> -->
+      </div>
+      <!-- <el-dropdown class="avatar-container" trigger="click"> -->
+      <el-dropdown>
+        <el-button size="mini" class="avatar-container">
+          <router-link to="/homePage">{{ loginName }}</router-link>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item><router-link to="/homePage"> 首页 </router-link></el-dropdown-item>
+          <el-dropdown-item @click.native="logout()">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -29,11 +36,17 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import store from '@/store'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger
+  },
+  data() {
+    return {
+      loginName: ''
+    }
   },
   computed: {
     ...mapGetters([
@@ -41,15 +54,39 @@ export default {
       'avatar'
     ])
   },
+  async mounted() {
+    const { roles } = await store.dispatch('user/getInfo')
+    this.loginName = roles[0]
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
-      // 这里可以控制是否回到登出前的页面
-      this.$router.push(`/login`)
-      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$confirm('确定要退出吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        await this.$store.dispatch('user/logout')
+        // 这里可以控制是否回到登出前的页面
+        this.$router.push(`/login`)
+        // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+
+        this.$message({
+          type: 'success',
+          message: '退出成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
+      // await this.$store.dispatch('user/logout')
+      // // 这里可以控制是否回到登出前的页面
+      // this.$router.push(`/login`)
+      // // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }
@@ -61,18 +98,18 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -99,10 +136,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }
@@ -130,6 +167,19 @@ export default {
         }
       }
     }
+  }
+}
+.handle-box {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    border-radius: 50%;
   }
 }
 </style>

@@ -5,11 +5,12 @@
 }
 
 .filter-box {
-  border: 2px solid #ddd; /* 设置边框 */
+  border: 1px solid #ddd; /* 设置边框 */
   padding: 20px 20px 0; /* 设置内边距 */
   border-radius: 8px; /* 设置圆角 */
-  background-color: #f9f9f9; /* 设置背景颜色 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 设置阴影 */
+  // background-color: #f9f9f9; /* 设置背景颜色 */
+  background-color: #fff; /* 设置背景颜色 */
+  // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 设置阴影 */
   position: relative; /* 改为相对定位 */
   left: 50%; /* 水平居中 */
   transform: translateX(-50%); /* 水平居中修正 */
@@ -28,7 +29,7 @@
 }
 
 .pagination-box {
-  border: 2px solid #ddd; /* 设置边框 */
+  border: 1px solid #ddd; /* 设置边框 */
   padding: 20px; /* 设置内边距 */
   border-radius: 8px; /* 设置圆角 */
   background-color: #f9f9f9; /* 设置背景颜色 */
