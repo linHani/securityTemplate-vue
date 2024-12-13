@@ -32,7 +32,7 @@
         content-class-name="content"
       >
         <div v-if="item.type === 'img'">
-          <el-image :src="dialog.dataList[item.prop]" :preview-src-list="[dialog.dataList[item.prop]]" style="width: 30px; height: 30px" />
+          <el-image :src="baseUrl + dialog.dataList[item.prop]" :preview-src-list="[baseUrl + dialog.dataList[item.prop]]" style="width: 30px; height: 30px" />
         </div>
         <span v-else-if="item.type === 'money'">{{ dialog.dataList[item.prop]/100 }}元</span>
         <div v-else class="value">{{ dialog.dataList[item.prop] || dialog.dataList[item.prop] === 0 ? dialog.dataList[item.prop] : '--' }}</div>
@@ -52,7 +52,7 @@ export default {
   // 数据展示
   data() {
     return {
-
+      baseUrl: process.env.VUE_APP_HTTP_LOCATION
     }
   },
   mounted() {

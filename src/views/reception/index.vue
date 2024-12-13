@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-04 22:29:59
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-13 19:21:38
+ * @LastEditTime: 2024-12-13 21:06:34
 -->
 <template>
   <div>
@@ -29,7 +29,7 @@
         >
           <el-image
             :src="baseUrl + item.image"
-            :preview-src-list="[item.image]"
+            :preview-src-list="[baseUrl + item.image]"
             class="card-img"
           />
           <p class="place">{{ routePath === '/consult' || params.type === '/consult' ? item.title : item.name }}</p>

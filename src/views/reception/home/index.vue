@@ -32,7 +32,7 @@
         >
           <el-image
             :src="baseUrl + item.image"
-            :preview-src-list="[item.image]"
+            :preview-src-list="[baseUrl + item.image]"
             class="card-img"
           />
           <p class="place">{{ item.name }}</p>

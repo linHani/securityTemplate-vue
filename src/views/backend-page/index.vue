@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-07 16:55:12
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-13 19:56:37
+ * @LastEditTime: 2024-12-13 21:04:48
 -->
 <template>
   <div class="container">
@@ -161,8 +161,8 @@
             <template #default="scope">
               <div v-if="item.type === 'img'">
                 <el-image
-                  :src="scope.row[item.prop]"
-                  :preview-src-list="[scope.row[item.prop]]"
+                  :src="baseUrl + scope.row[item.prop]"
+                  :preview-src-list="baseUrl + [scope.row[item.prop]]"
                   style="width: 50px; height: 50px"
                 />
               </div>
@@ -305,13 +305,15 @@ export default {
         ],
         '/place-interest': [
           { prop: 'name', label: '景点名称', width: '200' },
+          { prop: 'type', label: '景点类型', width: '200' },
           { prop: 'image', label: '景点图片', type: 'img' },
           { prop: 'level', label: '景点等级' },
+          { prop: 'location', label: '景点地址', width: '200' },
           { prop: 'price', label: '门票价格', type: 'money' },
           { prop: 'stock', label: '门票库存' },
           { prop: 'openTime', label: '开放时间', width: '200' },
-          { prop: 'trafficGuide', label: '交通指南', width: '200' },
           { prop: 'precautions', label: '注意事项', width: '200' },
+          { prop: 'trafficGuide', label: '交通指南', width: '200' },
           { prop: 'introduce', label: '景点介绍' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
@@ -319,8 +321,15 @@ export default {
           { prop: 'updateTime', label: '更新时间', width: '200' }
         ],
         '/itinerary': [
-          { prop: 'name', label: '行程名称', width: '200' },
-          { prop: 'image', label: '行程图片', type: 'img' },
+          { prop: 'name', label: '景点名称', width: '200' },
+          { prop: 'image', label: '图片', type: 'img' },
+          { prop: 'type', label: '旅游线路类型', width: '200' },
+          { prop: 'beginSpot', label: '旅游出发地', width: '200' },
+          { prop: 'waySpot', label: '旅游路线途径', width: '200' },
+          { prop: 'endSpot', label: '旅游路线目的地', width: '200' },
+          { prop: 'traffic', label: '旅游交通方式', width: '200' },
+          { prop: 'introduce', label: '旅游线路介绍', width: '300' },
+          { prop: 'startTime', label: '旅游出发时间', width: '200' },
           { prop: 'price', label: '门票价格', type: 'money' },
           { prop: 'stock', label: '门票库存' },
           { prop: 'createBy', label: '创建人', width: '200' },
@@ -352,9 +361,9 @@ export default {
           { prop: 'updateTime', label: '更新时间', width: '200' }
         ],
         '/my-order': [
-          { prop: 'realName', label: '名称', width: '200' },
-          { prop: 'type', label: '订单类型' },
+          { prop: 'realName', label: '联系人姓名', width: '200' },
           { prop: 'tel', label: '联系方式', width: '200' },
+          { prop: 'type', label: '订单类型' },
           { prop: 'status', label: '订单状态' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
@@ -524,7 +533,7 @@ export default {
       })
     },
     // 发货/退货
-    hanldeOpreate(row, type) {
+    hanldeOpreate(type, row) {
       let api = ''
       let message = ''
       if (type === 'send') {
