@@ -232,7 +232,7 @@ export const asyncRoutes = [
         path: '/my-order',
         name: 'my-order',
         component: () => import('@/views/backend-page/index.vue'),
-        meta: { title: '我的订单', icon: 'el-icon-s-order' }
+        meta: { title: '订单信息', icon: 'el-icon-s-order' }
       }
     ]
   },
@@ -245,7 +245,7 @@ export const asyncRoutes = [
         path: '/refund-order',
         name: 'refund-order',
         component: () => import('@/views/backend-page/index.vue'),
-        meta: { title: '退单管理', icon: 'el-icon-s-management' }
+        meta: { title: '退单信息', icon: 'el-icon-s-management' }
       }
     ]
   },
@@ -258,7 +258,7 @@ export const asyncRoutes = [
         path: '/comment',
         name: 'comment',
         component: () => import('@/views/backend-page/index.vue'),
-        meta: { title: '评论管理', icon: 'el-icon-s-comment' }
+        meta: { title: '评论信息', icon: 'el-icon-s-comment' }
       }
     ]
   },

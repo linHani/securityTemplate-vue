@@ -49,6 +49,14 @@
     justify-content: flex-end;
     margin-bottom: 1rem;
   }
+  .ellipsis {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 限制显示的行数为1行 */
+    -webkit-box-orient: vertical;
+  }
   .opreat-button {
     display: flex;
     justify-content: space-between;

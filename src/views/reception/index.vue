@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-04 22:29:59
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-13 21:06:34
+ * @LastEditTime: 2024-12-14 10:03:08
 -->
 <template>
   <div>
@@ -440,6 +440,7 @@ export default {
     // 点击预约
     handleClick(row) {
       this.dialogObj.title = '下单'
+      this.dialogObj.routePath = this.$route.path
       this.dialogObj.dataList = row
       this.dialogObj.visible = true
     },

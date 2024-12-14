@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2023-08-23 15:04:42
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-11 16:25:22
+ * @LastEditTime: 2024-12-14 09:38:52
 -->
 <template>
   <el-dialog
@@ -19,7 +19,7 @@
     @close="close()"
   >
     <el-descriptions
-      :column="2"
+      :column="1"
       border
     >
       <el-descriptions-item
@@ -32,7 +32,7 @@
         content-class-name="content"
       >
         <div v-if="item.type === 'img'">
-          <el-image :src="baseUrl + dialog.dataList[item.prop]" :preview-src-list="[baseUrl + dialog.dataList[item.prop]]" style="width: 30px; height: 30px" />
+          <el-image :src="baseUrl + dialog.dataList[item.prop]" :preview-src-list="[baseUrl + dialog.dataList[item.prop]]" style="width: 30px; height: 30px; cursor: pointer;" />
         </div>
         <span v-else-if="item.type === 'money'">{{ dialog.dataList[item.prop]/100 }}元</span>
         <div v-else class="value">{{ dialog.dataList[item.prop] || dialog.dataList[item.prop] === 0 ? dialog.dataList[item.prop] : '--' }}</div>
@@ -79,7 +79,7 @@ export default {
     }
   }
   .content {
-    width: 30%;
+    width: 80%;
     .value {
       width: 100%;
       text-align: left;

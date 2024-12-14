@@ -33,7 +33,7 @@
             </el-input>
           </el-form-item>
           <el-form-item prop="stock" label="门票库存">
-            <el-input-number v-model="formInfo[dialog.routePath].stock" :min="0" :controls="false" />
+            <el-input v-model="formInfo[dialog.routePath].stock" />
           </el-form-item>
           <el-form-item prop="openTime" label="开放时间">
             <el-date-picker
@@ -96,9 +96,6 @@
           </el-form-item>
           <el-form-item prop="type" label="旅游线路类型">
             <el-input v-model="formInfo[dialog.routePath].type" />
-          </el-form-item>
-          <el-form-item prop="introduce" label="酒店介绍">
-            <el-input v-model="formInfo[dialog.routePath].introduce" />
           </el-form-item>
         </div>
         <!-- 酒店 -->
@@ -371,7 +368,7 @@ export default {
             }
           }
           if (key === 'url' && dataList[key]) {
-            this.formInfo[this.dialog.routePath]['image'] = this.baseUrl + dataList[key]
+            this.formInfo[this.dialog.routePath]['image'] = dataList[key]
           }
         }
       }

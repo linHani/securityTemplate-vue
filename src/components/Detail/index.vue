@@ -4,8 +4,8 @@
     <!-- 介绍 -->
     <div class="content">
       <el-image
-        :src="info.image"
-        :preview-src-list="[info.image]"
+        :src="baseUrl + info.image"
+        :preview-src-list="[baseUrl + info.image]"
         class="image"
       />
       <div class="info">
@@ -119,6 +119,7 @@ export default {
   components: { HeaderRoute, Dialog },
   data() {
     return {
+      baseUrl: process.env.VUE_APP_HTTP_LOCATION,
       routePath: '',
       commentKey: 0,
       index: 0,
@@ -138,7 +139,7 @@ export default {
           { label: '开放时间', prop: 'openTime' },
           { label: '注意事项', prop: 'precautions' },
           { label: '交通指南', prop: 'trafficGuide' },
-          { label: '景点介绍', prop: 'introduce' },
+          // { label: '景点介绍', prop: 'introduce' },
           { label: '收藏数量', prop: 'collectCount' }
         ],
         '/scenic': [
@@ -152,7 +153,7 @@ export default {
           { label: '开放时间', prop: 'openTime' },
           { label: '注意事项', prop: 'precautions' },
           { label: '交通指南', prop: 'trafficGuide' },
-          { label: '景点介绍', prop: 'introduce' },
+          // { label: '景点介绍', prop: 'introduce' },
           { label: '收藏数量', prop: 'collectCount' }
         ],
         '/tavern': [
@@ -162,7 +163,7 @@ export default {
           { label: '酒店地址', prop: 'location' },
           { label: '联系电话', prop: 'tel' },
           { label: '酒店网址', prop: 'url', type: 'url' },
-          { label: '酒店介绍', prop: 'introduce' },
+          // { label: '酒店介绍', prop: 'introduce' },
           { label: '收藏数量', prop: 'collectCount' }
         ],
         '/reserve': [
@@ -194,7 +195,7 @@ export default {
           { label: '旅游线路途径', prop: 'waySpot' },
           { label: '旅游线路目的地', prop: 'endSpot' },
           { label: '旅游线路交通方式', prop: 'traffic' },
-          { label: '旅游线路介绍', prop: 'introduce' },
+          // { label: '旅游线路介绍', prop: 'introduce' },
           { label: '旅游线路出发时间', prop: 'startTime' },
           { label: '价格', prop: 'price', type: 'money' },
           { label: '库存', prop: 'stock' },
@@ -267,6 +268,7 @@ export default {
     // 点击预约
     handleClick() {
       this.dialogObj.title = '下单'
+      this.dialogObj.routePath = this.routePath
       this.dialogObj.dataList = this.info
       this.dialogObj.visible = true
     },

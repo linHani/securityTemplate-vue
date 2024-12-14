@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-07 16:55:12
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-13 21:04:48
+ * @LastEditTime: 2024-12-14 10:43:20
 -->
 <template>
   <div class="container">
@@ -162,11 +162,12 @@
               <div v-if="item.type === 'img'">
                 <el-image
                   :src="baseUrl + scope.row[item.prop]"
-                  :preview-src-list="baseUrl + [scope.row[item.prop]]"
+                  :preview-src-list="[baseUrl + scope.row[item.prop]]"
                   style="width: 50px; height: 50px"
                 />
               </div>
               <span v-else-if="item.type === 'money'">{{ scope.row[item.prop]/100 }}元</span>
+              <span v-else-if="item.type === 'textarea'" :title="scope.row[item.prop]" class="ellipsis">{{ scope.row[item.prop] }}</span>
               <div v-else-if="item.type === 'arr'">
                 <div v-for="x in scope.row[item.prop]" :key="x.index">{{ x.remark }}</div>
               </div>
@@ -224,6 +225,7 @@
             :page-size="params.pageSize"
             :page-sizes="[5, 20, 50, 100]"
             :total="totalCount"
+            :pager-count="5"
             :background="true"
             layout="total, sizes, prev, pager, next"
             @size-change="handlePageSizeChange"
@@ -297,7 +299,7 @@ export default {
       totalCount: 0,
       tableList: {
         '/carouselImageList': [
-          { prop: 'image', label: '轮播图', type: 'img' },
+          { prop: 'url', label: '轮播图', type: 'img' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
           { prop: 'updateBy', label: '更新人', width: '200' },
@@ -312,9 +314,9 @@ export default {
           { prop: 'price', label: '门票价格', type: 'money' },
           { prop: 'stock', label: '门票库存' },
           { prop: 'openTime', label: '开放时间', width: '200' },
-          { prop: 'precautions', label: '注意事项', width: '200' },
-          { prop: 'trafficGuide', label: '交通指南', width: '200' },
-          { prop: 'introduce', label: '景点介绍' },
+          { prop: 'precautions', label: '注意事项', type: 'textarea', width: '200' },
+          { prop: 'trafficGuide', label: '交通指南', type: 'textarea', width: '200' },
+          { prop: 'introduce', label: '景点介绍', type: 'textarea' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
           { prop: 'updateBy', label: '更新人', width: '200' },
@@ -328,7 +330,7 @@ export default {
           { prop: 'waySpot', label: '旅游路线途径', width: '200' },
           { prop: 'endSpot', label: '旅游路线目的地', width: '200' },
           { prop: 'traffic', label: '旅游交通方式', width: '200' },
-          { prop: 'introduce', label: '旅游线路介绍', width: '300' },
+          { prop: 'introduce', label: '旅游线路介绍', width: '300', type: 'textarea' },
           { prop: 'startTime', label: '旅游出发时间', width: '200' },
           { prop: 'price', label: '门票价格', type: 'money' },
           { prop: 'stock', label: '门票库存' },
@@ -340,11 +342,11 @@ export default {
         '/hotelList': [
           { prop: 'name', label: '酒店名称', width: '200' },
           { prop: 'image', label: '行程图片', type: 'img' },
-          { prop: 'type', label: '酒店类型', type: 'money' },
+          { prop: 'type', label: '酒店类型' },
           { prop: 'tel', label: '联系电话', width: '200' },
           { prop: 'url', label: '酒店网址' },
           { prop: 'location', label: '酒店地址', width: '200' },
-          { prop: 'introduce', label: '酒店介绍' },
+          { prop: 'introduce', label: '酒店介绍', type: 'textarea' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
           { prop: 'updateBy', label: '更新人', width: '200' },
@@ -354,7 +356,7 @@ export default {
           { prop: 'title', label: '攻略标题', width: '200' },
           { prop: 'image', label: '行程图片', type: 'img' },
           { prop: 'type', label: '攻略类型', type: 'money' },
-          { prop: 'context', label: '攻略内容', width: '300' },
+          { prop: 'context', label: '攻略内容', width: '300', type: 'textarea' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
           { prop: 'updateBy', label: '更新人', width: '200' },
@@ -443,7 +445,6 @@ export default {
         this.loading = true
         service.post(`${this.apiObj[this.routePath]}/selectTypeList`).then(res => {
           if (res.code === 200) {
-            console.log('res.data: ', res.data)
             res.data.forEach(item => {
               this.typeList.push({
                 label: item,
@@ -468,13 +469,13 @@ export default {
     },
     // 查询
     getList(flag) {
+      flag = flag || false
       if (flag) {
         this.params.pageNum = 1
         this.params.pageSize = 5
       }
       this.loading = true
       this.tableData = []
-      this.totalCount = 0
       let params = {}
       let api = ``
       if (this.routePath === '/my-order') {
@@ -491,8 +492,8 @@ export default {
         this.loading = false
         if (res.code === 200) {
           this.tableData = res.data.data || []
-          this.params.pageNum = res.data.pages
           this.totalCount = res.data.totalCount
+          // this.totalCount = 30
         }
       }).catch(error => {
         console.log(error)
@@ -608,7 +609,6 @@ export default {
     },
     // 新增/修改
     handleClick(row) {
-      console.log('row: ', row)
       if (JSON.stringify(row) === '{}') {
         this.dialogObj.title = '添加'
         this.dialogObj.handleType = 'add'

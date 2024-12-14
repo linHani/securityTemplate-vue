@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-04 16:31:56
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-13 09:44:20
+ * @LastEditTime: 2024-12-14 09:56:07
 -->
 <template>
   <div class="container">
@@ -34,7 +34,7 @@
       <div class="item">
         <i class="el-icon-s-data" />
         <div>
-          <h3>线路订单总数</h3>
+          <h3>退单总数</h3>
           <p>{{ info.backNum }}</p>
         </div>
       </div>

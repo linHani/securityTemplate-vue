@@ -13,7 +13,7 @@
       <div class="avatar-wrapper">
         <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
         <img
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          :src="baseUrl + info.avatar"
           class="user-avatar"
         >
         <!-- <i class="el-icon-caret-bottom" /> -->
@@ -45,7 +45,9 @@ export default {
   },
   data() {
     return {
-      loginName: ''
+      baseUrl: process.env.VUE_APP_HTTP_LOCATION,
+      loginName: '',
+      info: {}
     }
   },
   computed: {
@@ -55,7 +57,9 @@ export default {
     ])
   },
   async mounted() {
-    const { roles } = await store.dispatch('user/getInfo')
+    const res = await store.dispatch('user/getInfo')
+    this.info = res
+    const { roles } = this.info
     this.loginName = roles[0]
   },
   methods: {

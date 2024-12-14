@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-13 15:47:48
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-13 19:36:06
+ * @LastEditTime: 2024-12-14 10:44:05
 -->
 <template>
   <el-dialog
@@ -88,7 +88,7 @@ export default {
             realName: this.formInfo.realName,
             tel: this.formInfo.tel,
             num: this.formInfo.num * 1,
-            type: typeObj[this.$route.path]
+            type: typeObj[this.dialog.routePath]
           }
           console.log('params: ', params)
 

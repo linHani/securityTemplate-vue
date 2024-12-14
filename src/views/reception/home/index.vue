@@ -3,10 +3,10 @@
  * @Author: zhaoqi
  * @Date: 2024-12-04 20:27:12
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-13 16:33:21
+ * @LastEditTime: 2024-12-14 10:47:15
 -->
 <template>
-  <div class="reception-container">
+  <div class="home-container">
     <HeaderRoute :path="this.$route.path" />
     <div class="carousel-container">
       <el-carousel
@@ -266,6 +266,7 @@ export default {
       },
       dialogObj: {
         title: '',
+        routePath: '',
         visible: false,
         dataList: {}
       }
@@ -315,6 +316,7 @@ export default {
     // 点击预约
     handleClick(row) {
       this.dialogObj.title = '下单'
+      this.dialogObj.routePath = '/home'
       this.dialogObj.dataList = row
       this.dialogObj.visible = true
     },
@@ -331,6 +333,11 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.home-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
 .carousel-container {
   height: 43vh;
 }
@@ -347,7 +354,7 @@ export default {
   margin: auto;
 }
 .list {
-  height: 51vh;
+  // height: 51vh;
   .title {
     padding-top: 25px;
     margin: 0;
@@ -358,7 +365,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     padding-bottom: 10px;
-    overflow-y: auto;
     .card-item {
       position: relative;
       width: calc(33% - 7px);

@@ -17,7 +17,7 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item prop="password" style="margin-top: 30px">
         <el-input
           v-model="loginForm.password"
           type="password"
@@ -31,8 +31,8 @@
         </el-input>
       </el-form-item>
 
-      <el-radio v-model="loginForm.role" label="普通用户">普通用户</el-radio>
-      <el-radio v-model="loginForm.role" label="管理员" style="margin-bottom: 20px">管理员</el-radio>
+      <el-radio v-model="loginForm.role" label="普通用户" style="margin-top: 30px">普通用户</el-radio>
+      <el-radio v-model="loginForm.role" label="管理员" style="margin-top: 30px;margin-bottom: 20px">管理员</el-radio>
 
       <div>
         <el-button :loading="loading" type="primary" class="login-button" @click.native.prevent="handleLogin">登录</el-button>
