@@ -109,7 +109,7 @@
           <el-form-item prop="tel" label="联系电话">
             <el-input v-model="formInfo[dialog.routePath].tel" />
           </el-form-item>
-          <el-form-item prop="url" label="酒店网址">
+          <el-form-item prop="url" label="酒店网址" :rules="{ required: true, message: '必填项不能为空', trigger: 'blur' }">
             <el-input v-model="formInfo[dialog.routePath].url" />
           </el-form-item>
           <el-form-item prop="location" label="酒店地址">
@@ -128,7 +128,15 @@
             <el-input v-model="formInfo[dialog.routePath].context" />
           </el-form-item>
         </div>
-        <el-form-item prop="image" label="图片">
+        <div v-if="dialog.routePath === '/carouselImageList'" class="form-info">
+          <el-form-item prop="url" label="图片">
+            <UploadSingleImage
+              v-model="formInfo[dialog.routePath].url"
+              @updateImage="updateImageUrl"
+            />
+          </el-form-item>
+        </div>
+        <el-form-item v-if="dialog.routePath !== '/carouselImageList'" prop="image" label="图片">
           <UploadSingleImage
             v-model="formInfo[dialog.routePath].image"
             @updateImage="updateImage"
@@ -164,13 +172,20 @@ export default {
         callback()
       }
     }
+    const validateImageUrl = (rule, value, callback) => {
+      if (this.formInfo[this.dialog.routePath].url === null || this.formInfo[this.dialog.routePath].url === undefined) {
+        callback(new Error('图片不能为空'))
+      } else {
+        callback()
+      }
+    }
     return {
       baseUrl: process.env.VUE_APP_HTTP_LOCATION,
       loading: false,
       formInfo: {
         // 轮播图
         '/carouselImageList': {
-          image: null
+          url: null
         },
         // 景点
         '/place-interest': {
@@ -222,6 +237,7 @@ export default {
       rules: {
         // 景点
         image: [{ required: true, validator: validateImage, trigger: 'blur' }],
+        url: [{ required: true, validator: validateImageUrl, trigger: 'change' }],
         name: [{ required: true, message: '必填项不能为空', trigger: 'blur' }],
         type: [{ required: true, message: '必填项不能为空', trigger: 'blur' }],
         level: [{ required: true, message: '必填项不能为空', trigger: 'blur' }],
@@ -244,7 +260,7 @@ export default {
         traffic: [{ required: true, message: '必填项不能为空', trigger: 'blur' }],
         startTime: [{ required: true, message: '必填项不能为空', trigger: 'change' }],
         // 酒店
-        url: [{ required: true, message: '必填项不能为空', trigger: 'blur' }],
+        // url: [{ required: true, message: '必填项不能为空', trigger: 'blur' }],
         tel: [{ required: true, message: '必填项不能为空', trigger: 'blur' },
           { required: true, validator: validPhone, trigger: 'blur' }
         ],
@@ -299,7 +315,7 @@ export default {
       this.formInfo = {
         // 轮播图
         '/carouselImageList': {
-          image: null
+          url: null
         },
         // 景点
         '/place-interest': {
@@ -367,15 +383,19 @@ export default {
               this.formInfo[this.dialog.routePath][key] = dataList[key]
             }
           }
-          if (key === 'url' && dataList[key]) {
-            this.formInfo[this.dialog.routePath]['image'] = dataList[key]
-          }
+          // if (key === 'url' && dataList[key]) {
+          //   this.formInfo[this.dialog.routePath]['image'] = dataList[key]
+          // }
         }
       }
     },
     updateImage(image) {
       this.$set(this.formInfo[this.dialog.routePath], 'image', image)
       this.$refs.form.validateField('image')
+    },
+    updateImageUrl(image) {
+      this.$set(this.formInfo[this.dialog.routePath], 'url', image)
+      this.$refs.form.validateField('url')
     }
   }
 }

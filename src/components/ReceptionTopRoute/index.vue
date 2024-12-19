@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-04 21:46:25
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-14 10:36:53
+ * @LastEditTime: 2024-12-19 15:04:26
 -->
 <template>
   <div class="header">
@@ -26,7 +26,10 @@
         <el-avatar size="medium" :src="baseUrl + info.avatar" />
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
-            <span class="userName" @click="handleSelect('/personal')">{{ info.userName }}</span>
+            <span class="userName" @click="handleSelect('/reception-personal')">{{ info.userName }}</span>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <span class="userName" @click="handleSelect('/change-password')">修改密码</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -62,7 +65,8 @@ export default {
         { name: '旅游攻略', path: '/consult' },
         { name: '我的收藏', path: '/collection' },
         { name: '订单信息', path: '/reserve' },
-        { name: '退单信息', path: '/refund' }
+        { name: '退单信息', path: '/refund' },
+        { name: '评论信息', path: '/remark' }
       ]
     }
   },
@@ -74,30 +78,6 @@ export default {
       const res = await store.dispatch('user/getInfo')
       this.info.avatar = res.avatar
       this.info.userName = res.roles[0]
-      if (res.roles.includes('管理员')) {
-        this.menuList = [
-          { name: '系统主页', path: '/home' },
-          { name: '景点门票', path: '/scenic' },
-          { name: '旅游线路', path: '/travel' },
-          { name: '酒店住宿', path: '/tavern' },
-          { name: '旅游攻略', path: '/consult' },
-          { name: '我的收藏', path: '/collection' },
-          { name: '订单信息', path: '/reserve' },
-          { name: '退单信息', path: '/refund' }
-          // { name: '后台管理', path: '/homePage' }
-        ]
-      } else {
-        this.menuList = [
-          { name: '系统主页', path: '/home' },
-          { name: '景点门票', path: '/scenic' },
-          { name: '旅游线路', path: '/travel' },
-          { name: '景区酒店', path: '/tavern' },
-          { name: '旅游攻略', path: '/consult' },
-          { name: '我的收藏', path: '/collection' },
-          { name: '订单信息', path: '/reserve' },
-          { name: '退单信息', path: '/refund' }
-        ]
-      }
     },
     handleSelect(val) {
       console.log('val: ', val)

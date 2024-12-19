@@ -69,6 +69,12 @@ export default {
       })
 
       // When there is only one child router, the child router is displayed by default
+      if (parent.meta) {
+        this.onlyOneChild = { ... parent, path: '', noShowingChildren: false }
+        return true
+      }
+
+      // When there is only one child router, the child router is displayed by default
       if (showingChildren.length === 1) {
         return true
       }

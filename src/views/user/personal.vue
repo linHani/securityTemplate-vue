@@ -1,10 +1,11 @@
 <template>
-  <div class="container">
+  <div class="container" :style="{paddingTop: this.$route.path === '/reception-personal'? 0 : '20px',paddingBottom: this.$route.path === '/reception-personal'? 0 : '20px'}">
+    <HeaderRoute v-if="this.$route.path === '/reception-personal'" :path="this.$route.path" style="margin-bottom: 20px" />
     <div v-loading="loading" class="pagination-box">
       <el-form ref="form" :model="formInfo" :rules="rules" label-width="80px" class="form-info">
         <div class="info">
-          <el-form-item prop="adminname" label="登录账号">
-            <el-input v-model="formInfo.adminname" />
+          <el-form-item prop="username" label="登录账号">
+            <el-input v-model="formInfo.username" />
           </el-form-item>
           <el-form-item prop="name" label="用户名">
             <el-input v-model="formInfo.name" />
@@ -44,10 +45,11 @@
 
 <script>
 import service from '@/utils/request'
+import HeaderRoute from '@/components/ReceptionTopRoute/index.vue'
 import UploadSingleImage from '@/components/Upload/UploadSingleImage.vue'
 
 export default {
-  components: { UploadSingleImage },
+  components: { UploadSingleImage, HeaderRoute },
   props: {},
   data() {
     const validateImage = (rule, value, callback) => {
@@ -61,7 +63,7 @@ export default {
       loading: false,
       rules: {
         avatar: [{ required: true, validator: validateImage, trigger: 'blur' }],
-        adminname: [{ required: true, message: '请输入登录账号', trigger: 'blur' }],
+        username: [{ required: true, message: '请输入登录账号', trigger: 'blur' }],
         name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         sex: [{ required: true, message: '请输入性别', trigger: 'blur' }],
@@ -72,7 +74,7 @@ export default {
         status: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
       formInfo: {
-        adminname: '',
+        username: '',
         name: '',
         password: '',
         sex: '',
@@ -94,6 +96,9 @@ export default {
       this.loading = true
       service.get('/user/userPersonal', this.formInfo).then(res => {
         this.formInfo = res.data
+        if (!this.formInfo.username) {
+          this.formInfo.username = res.data.adminname
+        }
         this.loading = false
       }).catch(error => {
         console.log(error)
@@ -128,13 +133,25 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.form-info {
+.pagination-box {
+  background: #fff;
+  box-shadow: none;
+  border: 1px solid #f3f3f5;
+}
+::v-deep .form-info {
   display: flex;
   .info {
     flex: 4;
   }
   .avatar {
     flex: 3;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    .el-upload-list--picture-card .el-upload-list__item {
+      width: 230px;
+      height: 230px;
+    }
   }
 }
 </style>

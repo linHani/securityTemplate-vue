@@ -12,11 +12,11 @@
         <div class="title">
           <span>{{ routePath === '/consult' ? info.title : info.name }}</span>
           <div class="opreate">
-            <el-button v-if="isShow.pay" size="mini" type="primary" @click="handleOpreate('pay')">支付订单</el-button>
-            <el-button v-if="isShow.unsubscribe" size="mini" type="info" @click="handleOpreate('back')">申请退单</el-button>
             <el-button v-if="isShow.isReserve" size="mini" type="primary" @click="handleClick()">预约</el-button>
-            <span v-show="isShow.isCollect" @click="handleCollect()"><i class="el-icon-star-on" style="margin-left: 3px;color: #e1a244;font-size: 22px;" /></span>
-            <span v-show="!isShow.isCollect" @click="handleCollect()"><i class="el-icon-star-off" style="margin-left: 7px;" /></span>
+            <span>
+              <span v-show="isShow.isCollect" @click="handleCollect()"><i class="el-icon-star-on" style="margin-left: 3px;color: #e1a244;font-size: 22px;" /></span>
+              <span v-show="!isShow.isCollect" @click="handleCollect()"><i class="el-icon-star-off" style="margin-left: 7px;" /></span>
+            </span>
           </div>
         </div>
         <div class="filds">
@@ -26,7 +26,7 @@
             :title="`${ item.prop in info ? info[item.prop] : '' }`"
             class="label"
           >
-            <a v-if="item.type === 'url'" :href="item.url" target="blank">
+            <a v-if="item.type === 'url'" :href="info[item.prop]" target="blank">
               <span>{{ item.label }}：</span>
               <span style="color: #409EFF;">查看</span>
             </a>
@@ -34,16 +34,16 @@
             <P v-else>{{ item.label }}：{{ item.prop in info ? info[item.prop] : '' }}</P>
           </div>
         </div>
-        <!-- <div class="introduction">
-          <p :title="info.text">简介：{{ info.text }}</p>
-        </div> -->
+        <div v-if="routePath === '/consult'" class="introduction">
+          <p :title="info.context">攻略内容：{{ info.context }}</p>
+        </div>
       </div>
     </div>
     <!-- 介绍 -->
-    <div class="description">介绍：{{ routePath === '/reserve' ? info.remark : info.introduce }}</div>
+    <div class="description">介绍：{{ info.introduce }}</div>
     <!-- 评论 -->
     <div class="comment">
-      <div class="publish">
+      <!-- <div class="publish">
         <el-input
           v-model="remark"
           type="textarea"
@@ -59,7 +59,7 @@
           style="margin: 10px 0;"
           @click="handleRelease()"
         >评论</el-button>
-      </div>
+      </div> -->
       <!-- 评论列表 -->
       <ul
         :key="commentKey"
@@ -83,13 +83,13 @@
             </div>
             <div class="date">
               <span>{{ item.createTime }}</span>
-              <!-- <el-link type="primary" size="mini" style="margin-left: 10px" @click="handleInput(idx)">{{ item.isShowInput ? '取消' : '回复' }}</el-link>
-              <el-link type="danger" size="mini" style="margin-left: 10px" @click="handleDelete(item.id)">删除</el-link> -->
+              <el-link type="primary" size="mini" style="margin-left: 10px" @click="handleInput(idx)">{{ item.isShowInput ? '取消' : '回复' }}</el-link>
+              <!-- <el-link type="danger" size="mini" style="margin-left: 10px" @click="handleDelete(item.id)">删除</el-link> -->
             </div>
-            <!-- <div v-if="item.isShowInput && index === idx" class="flex">
+            <div v-if="item.isShowInput && index === idx" class="flex">
               <el-input v-model="item.reply" size="mini" />
               <el-link type="primary" size="mini" style="margin-left: 10px" @click="handleRelease(item, idx)">评论</el-link>
-            </div> -->
+            </div>
           </div>
           <div v-for="x in item.children" :key="x.index" class="reply">
             <!-- <span>{{ author }}</span> -->
@@ -138,9 +138,8 @@ export default {
           { label: '门票库存', prop: 'stock' },
           { label: '开放时间', prop: 'openTime' },
           { label: '注意事项', prop: 'precautions' },
-          { label: '交通指南', prop: 'trafficGuide' },
+          { label: '交通指南', prop: 'trafficGuide' }
           // { label: '景点介绍', prop: 'introduce' },
-          { label: '收藏数量', prop: 'collectCount' }
         ],
         '/scenic': [
           { label: '景点名称', prop: 'name' },
@@ -152,9 +151,8 @@ export default {
           { label: '门票库存', prop: 'stock' },
           { label: '开放时间', prop: 'openTime' },
           { label: '注意事项', prop: 'precautions' },
-          { label: '交通指南', prop: 'trafficGuide' },
+          { label: '交通指南', prop: 'trafficGuide' }
           // { label: '景点介绍', prop: 'introduce' },
-          { label: '收藏数量', prop: 'collectCount' }
         ],
         '/tavern': [
           { label: '酒店名称', prop: 'name' },
@@ -162,30 +160,15 @@ export default {
           // { label: '酒店图片', prop: 'image' },
           { label: '酒店地址', prop: 'location' },
           { label: '联系电话', prop: 'tel' },
-          { label: '酒店网址', prop: 'url', type: 'url' },
+          { label: '酒店网址', prop: 'url', type: 'url' }
           // { label: '酒店介绍', prop: 'introduce' },
-          { label: '收藏数量', prop: 'collectCount' }
-        ],
-        '/reserve': [
-          // { label: '商品id', prop: 'businessId' },
-          // { label: '下单用户id', prop: 'userId' },
-          { label: '联系电话', prop: 'tel' },
-          { label: '联系人姓名', prop: 'realName' },
-          { label: '订单编号', prop: 'orderCode' },
-          { label: '单价', prop: 'unitPrice' },
-          { label: '总价', prop: 'totalPrice' },
-          { label: '数量', prop: 'num' },
-          { label: '订单类型', prop: 'type' },
-          { label: '订单状态', prop: 'status' },
-          { label: '收藏数量', prop: 'collectCount' }
         ],
         '/consult': [
           // { label: '用户id', prop: 'userId' },
           { label: '攻略标题', prop: 'title' },
-          { label: '攻略内容', prop: 'context' },
+          // { label: '攻略内容', prop: 'context' },
           // { label: '攻略图片', prop: 'image' },
-          { label: '攻略类型', prop: 'type' },
-          { label: '收藏数量', prop: 'collectCount' }
+          { label: '攻略类型', prop: 'type' }
         ],
         '/travel': [
           { label: '旅游线路名称', prop: 'name' },
@@ -198,8 +181,7 @@ export default {
           // { label: '旅游线路介绍', prop: 'introduce' },
           { label: '旅游线路出发时间', prop: 'startTime' },
           { label: '价格', prop: 'price', type: 'money' },
-          { label: '库存', prop: 'stock' },
-          { label: '收藏数量', prop: 'collectCount' }
+          { label: '库存', prop: 'stock' }
         ]
       }, // 字段列表
       isShow: {
@@ -240,21 +222,13 @@ export default {
       if (this.routePath === '/home' || this.routePath === '/scenic' || this.routePath === '/travel') {
         this.isShow.isReserve = true
       }
-
-      if (this.info.status === '未支付') {
-        this.isShow.pay = true
-        this.isShow.unsubscribe = true
-      } else if (this.info.status === '已支付') {
-        this.isShow.unsubscribe = true
-      }
-
       this.getStatus()
     },
     // 获取收藏状态
     getStatus() {
       const params = {
         businessId: this.info.id,
-        type: this.routePath === '/reserve' ? this.info.type : this.selectType[this.routePath]
+        type: this.selectType[this.routePath]
       }
       this.loading = true
       service.get(`/collect/getState?businessId=${params.businessId}&type=${params.type}`).then(res => {
@@ -271,33 +245,6 @@ export default {
       this.dialogObj.routePath = this.routePath
       this.dialogObj.dataList = this.info
       this.dialogObj.visible = true
-    },
-    // 订单操作
-    handleOpreate(type) {
-      let api = ''
-      let message = ''
-      if (type === 'pay') {
-        api = `/order/changeStatusPaid?id=${this.info.id}`
-        message = '确定支付吗？'
-      } else {
-        api = `/order/changeStatusBackProcess?id=${this.info.id}`
-        message = '确定申请退单吗？'
-      }
-      this.$confirm(message, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        service.get(api).then(res => {
-          if (res.status === 'ok') {
-            this.$message.success(res.message)
-            this.$router.push(`/reserve`)
-          }
-        }).catch(error => {
-          console.log(error)
-          this.loading = false
-        })
-      })
     },
     // 点击收藏
     handleCollect() {
@@ -361,6 +308,7 @@ export default {
         this.loading = false
       })
     },
+    // 加载评论
     async load() {
       if (this.disabledFlag) {
         return

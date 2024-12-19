@@ -87,6 +87,15 @@ export const validName = (rule, value, callback) => {
   }
   callback()
 }
+// 密码
+export const validPassword = (rule, value, callback) => {
+  const reg = /^[a-zA-Z0-9]{6,20}$/
+
+  if (!reg.test(value)) {
+    callback(new Error('仅支持中文、英文和数字,6-20位'))
+  }
+  callback()
+}
 // 数字值
 export const validNumber = (rule, value, callback) => {
   console.log('rule: ', rule)

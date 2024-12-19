@@ -115,12 +115,25 @@ const receptionRoutes = [
     meta: { title: '我的退单' }
   },
   {
-    path: '/personal',
-    name: 'personal',
+    path: '/remark',
+    name: 'remark',
     hidden: true,
-    // component: () => import('@/views/reception/personal/index.vue'),
+    component: () => import('@/views/reception/index.vue'),
+    meta: { title: '评论信息' }
+  },
+  {
+    path: '/reception-personal',
+    name: 'reception-personal',
+    hidden: true,
     component: () => import('@/views/user/personal.vue'),
     meta: { title: '个人中心' }
+  },
+  {
+    path: '/change-password',
+    name: 'change-password',
+    hidden: true,
+    component: () => import('@/views/user/update-password.vue'),
+    meta: { title: '修改密码' }
   }
 ]
 
@@ -137,7 +150,7 @@ export const asyncRoutes = [
         path: 'homePage',
         name: 'homePage',
         component: () => import('@/views/homePage/index'),
-        meta: { title: '首页', icon: 'dashboard' }
+        meta: { title: '首页', icon: 'el-icon-s-home' }
       }
     ]
   },
@@ -170,7 +183,7 @@ export const asyncRoutes = [
   {
     path: '/hotel',
     component: Layout,
-    redirect: '/hotel/userPersonal',
+    redirect: '/hotel',
     name: 'hotel',
     children: [
       {
@@ -191,22 +204,6 @@ export const asyncRoutes = [
         name: '/information',
         component: () => import('@/views/backend-page/index.vue'),
         meta: { title: '旅游攻略管理', icon: 'el-icon-tickets' }
-      }
-    ]
-  },
-  {
-    path: '/carouselImageList',
-    component: Layout,
-    redirect: '/carouselImageList',
-    name: '/carouselImageList',
-    meta: { title: '轮播图管理', icon: 'table' },
-    children: [
-      {
-        path: '/carouselImageList',
-        name: 'carouselImageList',
-        component: () => import('@/views/backend-page/index.vue'),
-        // component: () => import('@/views/carouselImage/carouselImageManage.vue'),
-        meta: { title: '轮播图管理', icon: 'nested' }
       }
     ]
   },
@@ -263,30 +260,59 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/userList',
+    component: Layout,
+    redirect: '/userList',
+    children: [
+      {
+        path: '/userList',
+        name: 'userList',
+        component: () => import('@/views/user/userManage.vue'),
+        meta: { title: '用户管理', icon: 'table', roles: ['管理员'] }
+      }
+    ]
+  },
+  {
     path: '/user',
     component: Layout,
     redirect: '/user/userPersonal',
     // hidden: true,
     name: 'user',
-    meta: { title: '用户', icon: 'user' },
+    meta: { title: '个人中心', icon: 'user' },
     children: [
       {
-        path: 'personal',
+        path: '/personal',
         name: 'personal',
         component: () => import('@/views/user/personal.vue'),
-        meta: { title: '个人中心', icon: 'nested' }
+        meta: { title: '个人信息', icon: 'nested' }
       },
       {
-        path: 'adminList',
+        path: '/adminList',
         name: 'adminList',
+        hidden: true,
         component: () => import('@/views/user/adminManage.vue'),
         meta: { title: '管理员管理', icon: 'table', roles: ['管理员'] }
       },
       {
-        path: 'userList',
-        name: 'userList',
-        component: () => import('@/views/user/userManage.vue'),
-        meta: { title: '用户管理', icon: 'table', roles: ['管理员'] }
+        path: '/update-password',
+        name: 'update-password',
+        component: () => import('@/views/user/update-password.vue'),
+        meta: { title: '修改密码', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/carouselImageList',
+    name: 'system',
+    meta: { title: '系统管理', icon: 'el-icon-setting' },
+    children: [
+      {
+        path: '/carouselImageList',
+        name: 'carouselImageList',
+        component: () => import('@/views/backend-page/index.vue'),
+        meta: { title: '轮播图管理', icon: 'nested' }
       }
     ]
   },

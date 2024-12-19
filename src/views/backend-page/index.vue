@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-07 16:55:12
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-14 10:43:20
+ * @LastEditTime: 2024-12-18 15:03:05
 -->
 <template>
   <div class="container">
@@ -187,7 +187,7 @@
                 <el-button v-if="scope.row.status === '退单审核中'" type="info" size="mini" @click="hanldeOpreate('inward', scope.row)">同意退货</el-button>
               </div>
               <div v-else-if="routePath === '/comment'" class="opreat-button">
-                <el-button v-if="!scope.row.children" type="primary" size="mini" @click="handleComment(scope.row)">回复</el-button>
+                <el-button type="primary" size="mini" @click="handleComment(scope.row)">回复</el-button>
                 <el-button type="danger" size="mini" @click="handleComment(scope.row)">删除</el-button>
               </div>
               <div v-else class="opreat-button">
@@ -355,7 +355,7 @@ export default {
         '/information': [
           { prop: 'title', label: '攻略标题', width: '200' },
           { prop: 'image', label: '行程图片', type: 'img' },
-          { prop: 'type', label: '攻略类型', type: 'money' },
+          { prop: 'type', label: '攻略类型', width: '200' },
           { prop: 'context', label: '攻略内容', width: '300', type: 'textarea' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
@@ -366,16 +366,27 @@ export default {
           { prop: 'realName', label: '联系人姓名', width: '200' },
           { prop: 'tel', label: '联系方式', width: '200' },
           { prop: 'type', label: '订单类型' },
-          { prop: 'status', label: '订单状态' },
+          { prop: 'unitPrice', label: '单价' },
+          { prop: 'num', label: '数量' },
+          { prop: 'totalPrice', label: '总价' },
+          { prop: 'remark', label: '描述', type: 'textarea' },
+          { prop: 'status', label: '状态' },
+          { prop: 'orderCode', label: '订单编号' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
           { prop: 'updateBy', label: '更新人', width: '200' },
           { prop: 'updateTime', label: '更新时间', width: '200' }
         ],
         '/refund-order': [
-          { prop: 'name', label: '名称', width: '200' },
-          { prop: 'image', label: '图片', type: 'img' },
-          { prop: 'type', label: '退单类型' },
+          { prop: 'realName', label: '联系人姓名', width: '200' },
+          { prop: 'tel', label: '联系方式', width: '200' },
+          { prop: 'type', label: '订单类型' },
+          { prop: 'unitPrice', label: '单价' },
+          { prop: 'num', label: '数量' },
+          { prop: 'totalPrice', label: '总价' },
+          { prop: 'remark', label: '描述', type: 'textarea' },
+          { prop: 'status', label: '状态' },
+          { prop: 'orderCode', label: '订单编号' },
           { prop: 'createBy', label: '创建人', width: '200' },
           { prop: 'createTime', label: '创建时间', width: '200' },
           { prop: 'updateBy', label: '更新人', width: '200' },
@@ -539,10 +550,10 @@ export default {
       let message = ''
       if (type === 'send') {
         message = '确定发货吗？'
-        api = `/order/changeStatusComplete/?id=${row.id}`
+        api = `/order/changeStatusComplete?id=${row.id}`
       } else {
         message = '确定同意退货吗？'
-        api = `/order/changeStatusBack/?id=${row.id}`
+        api = `/order/changeStatusBack?id=${row.id}`
       }
       this.$confirm(message, '提示', {
         confirmButtonText: '确定',
