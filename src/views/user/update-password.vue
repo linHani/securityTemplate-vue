@@ -70,7 +70,7 @@ export default {
           this.loading = true
           service.post('/user/changePassword', params).then(res => {
             this.loading = false
-            this.$message.error(res.message)
+            this.$message.success(res.message)
             this.logout()
           }).catch(error => {
             console.log(error)

@@ -3,7 +3,7 @@
  * @Author: zhaoqi
  * @Date: 2024-12-07 16:55:12
  * @LastEditors: zhaoqi
- * @LastEditTime: 2024-12-18 15:03:05
+ * @LastEditTime: 2024-12-19 17:30:09
 -->
 <template>
   <div class="container">
@@ -140,6 +140,7 @@
           :data="tableData"
           border
           stripe
+          show-overflow-tooltip
           element-loading-text="表格数据加载中..."
           :header-cell-style="{ background: 'rgb(240, 244, 250)' }"
           style="width: 100%"
@@ -169,7 +170,7 @@
               <span v-else-if="item.type === 'money'">{{ scope.row[item.prop]/100 }}元</span>
               <span v-else-if="item.type === 'textarea'" :title="scope.row[item.prop]" class="ellipsis">{{ scope.row[item.prop] }}</span>
               <div v-else-if="item.type === 'arr'">
-                <div v-for="x in scope.row[item.prop]" :key="x.index">{{ x.remark }}</div>
+                <div v-for="x in scope.row[item.prop]" :key="x.index" class="reply-content">{{ x.remark }}</div>
               </div>
               <span v-else>{{ scope.row[item.prop] ? scope.row[item.prop] : '--' }}</span>
             </template>
@@ -188,7 +189,7 @@
               </div>
               <div v-else-if="routePath === '/comment'" class="opreat-button">
                 <el-button type="primary" size="mini" @click="handleComment(scope.row)">回复</el-button>
-                <el-button type="danger" size="mini" @click="handleComment(scope.row)">删除</el-button>
+                <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
               </div>
               <div v-else class="opreat-button">
                 <el-link
